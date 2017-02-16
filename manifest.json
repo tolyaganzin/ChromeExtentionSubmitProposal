@@ -1,0 +1,15 @@
+{
+  "name": "Submit proposal",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Face It extention save qestions",
+  "browser_action": {
+    "default_icon": "48x48.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js":      ["content.js"]
+  }],
+  "permissions": ["tabs", "<all_urls>", "storage", "activeTab"]
+}
