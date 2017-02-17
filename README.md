@@ -9,7 +9,7 @@ Face It chrome extention work with local storage
 - [x] click on: "Download unpakege extention"
 - [x] set pas to folder "ChromeExtentionSubmitProposal"
 
-##Usege
+##Usage
 ###Start menu
 
 ![picture alt](img/startMenu.jpg "startMenu")
