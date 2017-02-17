@@ -6,11 +6,15 @@
   <script src='popup.js'></script>
 </head>
 <body>
-  <button id="find" class="btn">find</button>
-  <button id="save" class="btn">save</button>
+  <div class="menu">
+    <button id="find" class="btn">Find</button>
+    <button id="save" class="btn">Save</button>
+    <button id="removeAll" class="btn">Remove all</button>
+  </div>
   <a id="bidName" href="" target="_blank"></a>
   <pre class="info hide"></pre>
-  <h6 class="hide">saving ....</h6>
+  <h5 class="content hide">saving ....</h5>
   <div class="content hide"></div>
+  <h5 id="notFound" class="content hide">Not found</h5>
 </body>
 </html>

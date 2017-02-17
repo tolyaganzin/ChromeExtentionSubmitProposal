@@ -1,8 +1,23 @@
 body {
   min-width: 500px;
+  margin: 0px;
 }
 .btn {
-  width: 100%;
+  width: 33.7%;
+  margin: -2px;
+
+  border-color: dodgerblue;
+  border-style: solid;
+  border-radius: 4px;
+
+  color: dodgerblue;
+  background: transparent;
+  font-size: medium;
+  transition: 1s;
+}
+.btn:focus {
+  outline:0;
+  color: green;
 }
 .info {
   padding: 10px;
@@ -11,6 +26,9 @@ body {
   border-color: #e0e0e0;
   border-style: solid;
 
+}
+.menu {
+  padding: 5px;
 }
 .content {
   padding: 10px;
