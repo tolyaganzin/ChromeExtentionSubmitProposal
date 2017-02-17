@@ -1,6 +1,6 @@
 #Chrome Extention Submit Proposal
 Face It chrome extention work with local storage
-###How to use extention? (else ask developer!)
+###How to install extention?
 
 - [x] chrome
 - [x] settings
