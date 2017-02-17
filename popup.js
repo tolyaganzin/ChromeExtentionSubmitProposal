@@ -1,8 +1,10 @@
-/* A function creator for callbacks */
+// url page path
 var urlpage = '';
-  // chrome.storage.local.clear();
+
+// worck with data after get them out current tab
 function doStuffWithDOM(element) {
 
+  // add data to popup view
   $('h5').addClass("hide");
 
   for (var i = 0; i < element.length; i++) {
@@ -14,33 +16,39 @@ function doStuffWithDOM(element) {
     $('div.content').append($(preElement));
   }
 
+  // check and save data to local storage
   chrome.storage.local.get(["proposals"], function(items){
-    var arr = [];
+    var proposals = [];
+    // check data
     if (items.proposals) {
-      arr = items.proposals;
+      // if local storage not empty
+      proposals = items.proposals;
 
-      if(!$.grep(arr, function(e){ return e.urlpage == $(urlpage).text() }).length) {
-        arr.push({'urlpage': $(urlpage).text(), 'questions': element});
-        console.log(arr);
-        chrome.storage.local.set({ "proposals": arr}, function(){});
+      // if local storage has not this proposal, save them
+      if(!$.grep(proposals, function(e){ return e.urlpage == $(urlpage).text() }).length) {
+        proposals.push({'urlpage': $(urlpage).text(), 'questions': element});
+        chrome.storage.local.set({ "proposals": proposals}, function(){});
       } else {
-        console.log("update proposal");
-        $.grep(arr, function(e){
-           if(e.urlpage == $(urlpage).text()) {
-             e.questions = element;
-           }
+        // update this proposal
+        $.grep(proposals, function(e){
+          // find and update
+          if(e.urlpage == $(urlpage).text()) {
+            e.questions = element;
+          }
         });
-        chrome.storage.local.set({ "proposals": arr}, function(){});
+        chrome.storage.local.set({ "proposals": proposals}, function(){});
       }
 
     } else {
-      arr.push({'urlpage': $(urlpage).text(), 'questions': element});
-      console.log(arr);
-      chrome.storage.local.set({ "proposals": arr}, function(){});
+      // if local storage empty, set first proposal
+      proposals.push({'urlpage': $(urlpage).text(), 'questions': element});
+      chrome.storage.local.set({ "proposals": proposals}, function(){});
     }
   });
 }
-function toDoPizdato() {
+
+// save current proposal to local storage
+function save() {
 
   $('div.content').addClass("hide");
   $('div.content').empty();
@@ -48,62 +56,83 @@ function toDoPizdato() {
   $('#notFound').addClass("hide");
 
   chrome.tabs.getSelected(null,function(tab) {
-    ////auto get test
+    // get current tab url and work with it
     $.get(tab.url, function( htmlCurrentPage ) {
 
+      // fill popup content
       urlpage = $('#bidName').clone();
       $('div.content').removeClass("hide");
       $('div.content').append($(urlpage).text(tab.url).attr("href", tab.url));
 
+      // work with current tab
       chrome.tabs.sendMessage(tab.id, { text: "report_back" }, doStuffWithDOM);
     });
   });
 }
-function onWindowLoad() {
 
-  $('#save').click(function() {
-    toDoPizdato();
-  })
-  $('#find').click(function() {
-    $('div.content').empty();
+// find current proposal in local storage
+function find() {
+  $('div.content').empty();
 
-    chrome.tabs.getSelected(null,function(tab) {
-      chrome.storage.local.get(["proposals"], function(items){
-        if (items.proposals) {
+  // get current tab url and data from local storage
+  chrome.tabs.getSelected(null,function(tab) {
+    chrome.storage.local.get(["proposals"], function(items){
+      // if local storage is not empty
+      if (items.proposals) {
+        // if has this proposal
+        if($.grep(items.proposals, function(e){ return e.urlpage == tab.url }).length) {
+          // fill contetnt popup
+          urlpage = $('#bidName').clone();
+          $('div.content').append($(urlpage).text(tab.url).attr("href", tab.url));
+          $('div.content').removeClass("hide");
 
-          if($.grep(items.proposals, function(e){ return e.urlpage == tab.url }).length) {
-            urlpage = $('#bidName').clone();
-            $('div.content').append($(urlpage).text(tab.url).attr("href", tab.url));
+          $.grep(items.proposals, function(e){
+             if(e.urlpage == tab.url) {
+               for (var i = 0; i < e.questions.length; i++) {
+                 var preElement = $('pre.hide').clone();
 
-            $.grep(items.proposals, function(e){
-               if(e.urlpage == tab.url) {
-                 for (var i = 0; i < e.questions.length; i++) {
-                   var preElement = $('pre.hide').clone();
+                 $(preElement).removeClass("hide");
+                 $(preElement).text(e.questions[i]);
 
-                   $(preElement).removeClass("hide");
-                   $(preElement).text(e.questions[i]);
-
-                   $('div.content').removeClass("hide");
-                   $('div.content').append($(preElement));
-                 }
+                 $('div.content').append($(preElement));
                }
-            });
-
-          }
+             }
+          });
 
         } else {
+          // if has not this proposal in local storage
           $('#notFound').removeClass("hide");
         }
-      });
 
+      } else {
+        // if empty
+        $('#notFound').removeClass("hide");
+      }
     });
-  })
 
+  });
+}
+
+// remove all proposals from local storafe
+function removeAll() {
+  // work with content
+  $('#notFound').addClass("hide");
+  $('div.content').addClass("hide");
+  $('div.content').empty();
+  // clear local storage
+  chrome.storage.local.clear();
+}
+
+// on window load listen this ivents
+function onWindowLoad() {
+  $('#save').click(function() {
+    save();
+  });
+  $('#find').click(function() {
+    find();
+  });
   $('#removeAll').click(function() {
-    $('#notFound').addClass("hide");
-    $('div.content').addClass("hide");
-    $('div.content').empty();
-    chrome.storage.local.clear();
+    removeAll();
   });
 }
 
