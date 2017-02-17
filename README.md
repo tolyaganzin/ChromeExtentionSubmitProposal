@@ -6,7 +6,7 @@ Face It chrome extention work with local storage
 - [x] settings
 - [x] extentions
 - [x] check developer mode
-- [x] click on: "Download unpakege extention"
+- [x] click on: "Download unpakage extention"
 - [x] set pas to folder "ChromeExtentionSubmitProposal"
 
 ##Usage
