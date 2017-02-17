@@ -28,9 +28,9 @@ or
 
 next
 
-![picture alt](img/find.jpg "saved")
+![picture alt](img/saved.jpg "saved")
 
 ###Remove All
 Remove all data from local storage and clear popup
 
-![picture alt](img/startMenu.jpg "startMenu")
+![picture alt](img/removeAll.jpg "startMenu")
