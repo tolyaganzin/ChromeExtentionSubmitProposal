@@ -76,6 +76,15 @@ function find() {
 
   // get current tab url and data from local storage
   chrome.tabs.getSelected(null,function(tab) {
+    var urlBid = tab.url;
+    var idBid = urlBid.match(/~([0-9a-z]*)/);
+    console.log(idBid[1]);
+
+    // get current tab url and work with it
+    $.get(tab.url, function( htmlCurrentPage ) {
+      console.log($(htmlCurrentPage).find('span.organization-selector').text());
+    });
+
     chrome.storage.local.get(["proposals"], function(items){
       // if local storage is not empty
       if (items.proposals) {
